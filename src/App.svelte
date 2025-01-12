@@ -1,14 +1,24 @@
 <script lang="ts">
   import { getSudoku } from 'sudoku-gen';
-  const difficultyLevel = ['easy', 'medium', 'hard', 'expert'];
-  let sudoku = $state({});
+  
+  type Cell = { value: any; enabled: boolean };
+  type Grid = Cell[][];
+  type Difficulty = 'easy' | 'medium' | 'hard' | 'expert';
+  interface SudokuPuzzle {
+    puzzle: string;
+    solution: string;
+    difficulty: Difficulty;
+  }
+  
+  const difficultyLevel: string[] = ['easy', 'medium', 'hard', 'expert'];
+  let sudoku = $state<SudokuPuzzle>();
   let showDebug = $state(false);
-  let grid = $state([])
-  let solution = $state([])
+  let grid = $state<Grid>([])
+  let solution = $state<Grid>([])
   let showHighlight = $state(true);
   let showErrors = $state(false);
 
-  function generateBoard(level) {
+  function generateBoard(level: Difficulty) {
     sudoku = getSudoku(level);
     grid = makeGrid(sudoku.puzzle);
     solution = makeGrid(sudoku.solution);
@@ -22,30 +32,30 @@
   let curCol = $state(0);
   let cellSelected = $derived(grid[curRow][curCol].value);
 
-  const nums = [7,8,9,4,5,6,1,2,3];
+  const nums: number[] = [7,8,9,4,5,6,1,2,3];
   let countAppearances = $derived.by(() => {
     const b = grid.flat().map(x => x.value).filter(x => x != '0');
-    const counts = {};
+    const counts: {[key: number]: number} = {};
     for (const num of b) {
       counts[num] = counts[num] ? counts[num] + 1 : 1;
     }
     return counts;
   });
 
-  function makeGrid(puzzle) {
+  function makeGrid(puzzle: string) {
     puzzle = puzzle.replaceAll('-', '0');
     let b = [];
     for (let i = 0; i < 9; i++) {
       let row = [];
       for (let j = 0; j < 9; j++) {
-        row.push({value:puzzle[i * 9 + j], enabled:puzzle[i * 9 + j] == 0 ? true : false});
+        row.push({value:parseInt(puzzle[i * 9 + j]), enabled:parseInt(puzzle[i * 9 + j]) == 0 ? true : false});
       }
       b.push(row);
     }
     return b;
   }
 
-  function handleKeyDown(e) {
+  function handleKeyDown(e: KeyboardEvent) {
     console.log(e.key)
     if (e.key === 'ArrowRight') {
       curCol = (curCol + 1) % 9;
@@ -62,7 +72,7 @@
     if (e.key === 'Delete') {
       grid[curRow][curCol].value = 0;
     }
-    if (e.key >= 1 && e.key <= 9) {
+    if (parseInt(e.key) >= 1 && parseInt(e.key) <= 9) {
       if(grid[curRow][curCol].enabled) {
         grid[curRow][curCol].value = e.key;
       }
@@ -70,10 +80,10 @@
 
   }
 
-  function handleClick(v,r,c) {
-    curRow = r;
-    curCol = c;
-  }
+  // function handleClick(v: number,r,c) {
+  //   curRow = r;
+  //   curCol = c;
+  // }
   function handleNumsClick(value) {
     if(grid[curRow][curCol].enabled) {
       grid[curRow][curCol].value = value;
@@ -113,7 +123,7 @@
         <div class="row">
           {#each row as cell, c}
             <button class="cell"
-              onclick={() => handleClick(cell.value,r,c)}
+              onclick={() => {curRow = r; curCol = c}}
               class:highlight={showHighlight && cellSelected==cell.value && cell.value != 0}
               class:active={r==curRow && c==curCol}
               class:error={showErrors && (solution[r][c].value != cell.value) && (cell.value != 0)}
@@ -133,6 +143,7 @@
           onclick={() => handleNumsClick(value)}>{value}
         </button>
       {/each}
+      <button class="num num-wide" onclick={() => handleNumsClick(0)}>clear</button>
     </div>
 
   </div>
