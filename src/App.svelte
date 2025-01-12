@@ -105,9 +105,8 @@
   <h1>sudoku</h1>
   <div class="controls">
     {#each difficultyLevel as level}
-      <!-- <button class:selectedLevel={level == sudoku.difficulty && !solved} on:click={() => generateBoard(level)}>{level}</button> -->
       <button
-        class:selectedLevel={level == sudoku.difficulty && !solved}
+        class:highlight={level == sudoku.difficulty && !solved}
         onclick={() => handleButtonClick(level)}
       >{level}</button>
     {/each}

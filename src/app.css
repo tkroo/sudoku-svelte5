@@ -71,6 +71,7 @@ body {
   background-color: hsl(0, 0%, 92%);
   width: calc(var(--base-size) * 1.5);
   height: calc(var(--base-size) * 1.5);
+  font-family: inherit;
 }
 
 .cell:nth-child(3n+4):nth-child(-n+9) {
@@ -92,7 +93,7 @@ body {
 }
 
 .cell.active {
-  outline: 4px dashed hsl(212, 65%, 40%);
+  outline: 4px dashed hsl(200, 65%, 40%);
   outline-offset: -6px;
 }
 
@@ -105,7 +106,7 @@ body {
 }
 
 .highlight {
-  background-color: hsla(200, 40%, 50%, 0.5) !important;
+  background-color: hsla(200, 100%, 80%, 0.5) !important;
 }
 
 .debug {
@@ -128,15 +129,12 @@ button {
   color: #444;
   cursor: pointer;
   border-radius: 0rem;
+  font-family: inherit;
 }
 
 button[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.selectedLevel {
-  background-color: hsla(200, 100%, 50%, 0.5) !important;
 }
 
 .nums-wrap {
@@ -166,6 +164,8 @@ button[disabled] {
 
 .done {
     background-color: hsla(120, 100%, 25%, 0.5);
+    font-weight: bold;
+    color: #fff;
 }
 
 /* .error::before {
