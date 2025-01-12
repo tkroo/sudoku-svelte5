@@ -12,6 +12,12 @@ body {
   --base-size: 3rem;
 }
 
+.main-cols {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
 .board {
   border: 2px solid black;
   width: fit-content;
@@ -20,18 +26,39 @@ body {
   grid-auto-columns: max-content;
   --bcolor: black;
 }
+
+@media screen and (max-width: 600px) {
+  body {
+    --base-size: 1.6rem;
+    padding: 0;
+  }
+  .main-cols {
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+  }
+  .board {
+    border-width: 0px;
+    margin: 0 auto;
+  }
+  .num {
+    font-size: calc(var(--base-size) * 1) !important;
+    padding: 0.75rem;
+  }
+}
+
 .board.solved {
   --bcolor: hsl(118, 50%, 50%);
   border-color: var(--bcolor);
   transition: background-color 0.3s ease-in-out, border-color 0.5s ease-in-out;
 }
+
 .solved .cell, .solved .highlight, .solved .current, .solved .cell.active {
   background-color: hsla(118, 70%, 80%, 1) !important;
   cursor: default;
   transition: background-color 0.9s ease-in-out;
   outline: none;
 }
-
 
 .cell {
   position: relative;
@@ -45,6 +72,7 @@ body {
   width: calc(var(--base-size) * 1.5);
   height: calc(var(--base-size) * 1.5);
 }
+
 .cell:nth-child(3n+4):nth-child(-n+9) {
   border-left: 1px solid var(--bcolor);
 }
@@ -52,26 +80,26 @@ body {
 .row:nth-child(3) .cell:nth-child(n) {
   border-bottom: 1px solid var(--bcolor);
 }
+
 .row:nth-child(6) .cell:nth-child(n) {
   border-bottom: 1px solid var(--bcolor);
 }
+
 .value {
   font-size: calc(var(--base-size) * 0.8);
   color: #000;
   font-weight: 900;
 }
+
 .cell.active {
   outline: 4px dashed hsl(212, 65%, 40%);
   outline-offset: -6px;
 }
+
 .given {
-  /* font-weight: 900; */
   color: #555;
 }
-/* .cell:focus {
-  outline: 3px dashed hsl(12, 65%, 40%);
-  outline-offset: -5px;
-} */
+
 .hidden {
   opacity: 0;
 }
@@ -111,12 +139,6 @@ button[disabled] {
   background-color: hsla(200, 100%, 50%, 0.5) !important;
 }
 
-.main-cols {
-  display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
 .nums-wrap {
   position: relative;
   display: grid;
@@ -127,11 +149,20 @@ button[disabled] {
   gap: 0.25rem;
 }
 
-.nums-wrap button {
-    width: 100%;
-    height: 100%;
-    display: inline;
+.num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--base-size) * 0.5);
+  aspect-ratio: 1/1;
 }
+
+.num-wide {
+  grid-column: span 3;
+  aspect-ratio: unset;
+}
+
+
 
 .done {
     background-color: hsla(120, 100%, 25%, 0.5);
