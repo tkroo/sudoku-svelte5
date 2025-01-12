@@ -6,7 +6,7 @@
   let grid = $state([])
   let solution = $state([])
   let showHighlight = $state(true);
-  let showErrors = $state(true);
+  let showErrors = $state(false);
 
   function generateBoard(level) {
     sudoku = getSudoku(level);
