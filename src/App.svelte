@@ -33,7 +33,8 @@
   let curCol = $state(0);
   let cellSelected = $derived(grid[curRow][curCol].value);
 
-  const nums: number[] = [7,8,9,4,5,6,1,2,3];
+  // const nums: number[] = [7,8,9,4,5,6,1,2,3];
+  const nums: number[] = [1,2,3,4,5,6,7,8,9];
   let countAppearances = $derived.by(() => {
     const b = grid.flat().map(x => x.value).filter(x => x != '0');
     const counts: {[key: number]: number} = {};
@@ -130,18 +131,20 @@
 <main>
   <h1>sudoku</h1>
   <div class="controls">
-    {#each difficultyLevel as level}
+    <div class="buttons">
+
+      {#each difficultyLevel as level}
       <button
-        class:highlight={level == sudoku.difficulty && !solved}
-        onclick={() => handleButtonClick(level)}
+      class:highlight={level == sudoku.difficulty && !solved}
+      onclick={() => handleButtonClick(level)}
       >{level}</button>
-    {/each}
-    <!-- <button onclick={solvePuzzle}>solve</button> -->
-    <!-- <button onclick={() => showHighlight = !showHighlight} class:highlight={showHighlight}>highlight similar</button> -->
-    <!-- <button onclick={() => showErrors = !showErrors} class:highlight={showErrors}>toggle show errors</button> -->
-    <label for="showHighlight">highlight (h) <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
-    <label for="showErrors">errors (e) <input type="checkbox" id="showErrors" bind:checked={showErrors}></label>
-    <label class="input-candidate-entry" for="candidatesMode">candidate entry (c) <input type="checkbox" id="candidatesMode" bind:checked={candidatesMode}></label>
+      {/each}
+    </div>
+    <div class="settings">
+      <label for="showHighlight">highlight (h) <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
+      <label for="showErrors">errors (e) <input type="checkbox" id="showErrors" bind:checked={showErrors}></label>
+      <label class="input-candidate-entry" for="candidatesMode">candidate entry (c) <input type="checkbox" id="candidatesMode" bind:checked={candidatesMode}></label>
+    </div>
   </div>
 
   <div class="main-cols">
@@ -170,7 +173,7 @@
           onclick={() => handleNumsClick(value)}>{value}
         </button>
       {/each}
-      <button class="num num-wide" onclick={() => handleNumsClick(0)}>clear</button>
+      <button class="num num-wide" onclick={() => handleNumsClick(0)}>X</button>
     </div>
 
   </div>
