@@ -72,7 +72,7 @@ body {
   background-color: #fff;
   border: 1px solid hsl(0, 0%, 75%);
   background-color: hsl(0, 0%, 92%);
-  width: min(9vh, 10vw);
+  width: min(8vh, 10.6vw);
   height: auto;
   aspect-ratio: 1/1;
   font-family: inherit;
@@ -143,6 +143,8 @@ body {
   gap: 0.5rem;
   margin: 1rem 0;
   align-items: baseline;
+  padding: 0 0.5rem;
+  flex-wrap: wrap;
 }
 
 .controls label {
