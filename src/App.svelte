@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getSudoku } from 'sudoku-gen';
   
-  type Cell = { value: any; enabled: boolean };
+  type Cell = { value: any; enabled: boolean; candidates: number[] };
   type Grid = Cell[][];
   type Difficulty = 'easy' | 'medium' | 'hard' | 'expert';
   interface SudokuPuzzle {
@@ -17,6 +17,7 @@
   let solution = $state<Grid>([])
   let showHighlight = $state(true);
   let showErrors = $state(false);
+  let candidatesMode = $state(false);
 
   function generateBoard(level: Difficulty) {
     sudoku = getSudoku(level);
@@ -48,7 +49,7 @@
     for (let i = 0; i < 9; i++) {
       let row = [];
       for (let j = 0; j < 9; j++) {
-        row.push({value:parseInt(puzzle[i * 9 + j]), enabled:parseInt(puzzle[i * 9 + j]) == 0 ? true : false});
+        row.push({value:parseInt(puzzle[i * 9 + j]), enabled:parseInt(puzzle[i * 9 + j]) == 0 ? true : false, candidates: [ ]});
       }
       b.push(row);
     }
@@ -56,7 +57,7 @@
   }
 
   function handleKeyDown(e: KeyboardEvent) {
-    console.log(e.key)
+    // console.log(e.key)
     if (e.key === 'ArrowRight') {
       curCol = (curCol + 1) % 9;
     } else if (e.key === 'ArrowLeft') {
@@ -69,12 +70,37 @@
     if (e.key=='d') {
       showDebug = !showDebug;
     }
-    if (e.key === 'Delete') {
-      grid[curRow][curCol].value = 0;
+    if (e.key=='c') {
+      candidatesMode = !candidatesMode;
     }
+    if (e.key=='h') {
+      showHighlight = !showHighlight;
+    }
+    if (e.key=='e') {
+      showErrors = !showErrors;
+    }
+    if (e.key === 'Delete') {
+      if(candidatesMode) {
+        grid[curRow][curCol].candidates.pop();
+      } else {
+        grid[curRow][curCol].value = 0;
+
+      }
+    }
+    
     if (parseInt(e.key) >= 1 && parseInt(e.key) <= 9) {
+      let num: number = parseInt(e.key);
       if(grid[curRow][curCol].enabled) {
-        grid[curRow][curCol].value = e.key;
+        if(candidatesMode) {
+          let c = grid[curRow][curCol].candidates;
+          if(c.includes(num)) {
+            grid[curRow][curCol].candidates = c.filter(x => x != num)
+          } else {
+            grid[curRow][curCol].candidates.push(num)
+          }
+        } else {
+          grid[curRow][curCol].value = num;
+        }
       }
     }
 
@@ -95,7 +121,7 @@
   }
 
   function solvePuzzle() {
-    console.log('not implemented yet')
+    // console.log('not implemented yet')
   }
 
 </script>
@@ -111,8 +137,11 @@
       >{level}</button>
     {/each}
     <!-- <button onclick={solvePuzzle}>solve</button> -->
-    <button onclick={() => showHighlight = !showHighlight} class:highlight={showHighlight}>highlight similar</button>
-    <button onclick={() => showErrors = !showErrors} class:highlight={showErrors}>toggle show errors</button>
+    <!-- <button onclick={() => showHighlight = !showHighlight} class:highlight={showHighlight}>highlight similar</button> -->
+    <!-- <button onclick={() => showErrors = !showErrors} class:highlight={showErrors}>toggle show errors</button> -->
+    <label for="showHighlight">highlight (h) <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
+    <label for="showErrors">errors (e) <input type="checkbox" id="showErrors" bind:checked={showErrors}></label>
+    <label for="candidatesMode">candidate entry (c) <input type="checkbox" id="candidatesMode" bind:checked={candidatesMode}></label>
   </div>
 
   <div class="main-cols">
@@ -126,6 +155,7 @@
               class:active={r==curRow && c==curCol}
               class:error={showErrors && (solution[r][c].value != cell.value) && (cell.value != 0)}
             >
+              <span class="candidates" class:activecandy={candidatesMode && r==curRow && c==curCol}>{cell.candidates.join('')}</span>
               <span class="value" class:given={!grid[r][c].enabled} class:hidden={cell.value==0}>{cell.value}</span>
             </button>
           {/each}
