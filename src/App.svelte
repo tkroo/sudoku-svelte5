@@ -122,7 +122,11 @@
   }
 
   function solvePuzzle() {
-    // console.log('not implemented yet')
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        grid[i][j].value = solution[i][j].value
+      }
+    }
   }
 
 </script>
@@ -139,6 +143,7 @@
       onclick={() => handleButtonClick(level)}
       >{level}</button>
       {/each}
+      <!-- <button onclick={solvePuzzle}>solve</button> -->
     </div>
     <div class="settings">
       <label for="showHighlight">highlight <span class="keyshortcut">(h)</span> <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
