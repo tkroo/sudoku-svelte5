@@ -141,9 +141,9 @@
       {/each}
     </div>
     <div class="settings">
-      <label for="showHighlight">highlight (h) <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
-      <label for="showErrors">errors (e) <input type="checkbox" id="showErrors" bind:checked={showErrors}></label>
-      <label class="input-candidate-entry" for="candidatesMode">candidate entry (c) <input type="checkbox" id="candidatesMode" bind:checked={candidatesMode}></label>
+      <label for="showHighlight">highlight <span class="keyshortcut">(h)</span> <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
+      <label for="showErrors">errors <span class="keyshortcut">(e)</span> <input type="checkbox" id="showErrors" bind:checked={showErrors}></label>
+      <label class="input-candidate-entry" for="candidatesMode">candidate entry <span class="keyshortcut">(c)</span> <input type="checkbox" id="candidatesMode" bind:checked={candidatesMode}></label>
     </div>
   </div>
 
