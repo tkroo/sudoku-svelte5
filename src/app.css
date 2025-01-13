@@ -44,6 +44,9 @@ body {
     border-width: 0px;
     margin: 0 auto;
   } */
+  .input-candidate-entry {
+    display: none;
+   }
   .num {
     font-size: calc(var(--base-size) * 1) !important;
     padding: 0.75rem;

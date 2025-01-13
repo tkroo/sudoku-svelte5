@@ -141,7 +141,7 @@
     <!-- <button onclick={() => showErrors = !showErrors} class:highlight={showErrors}>toggle show errors</button> -->
     <label for="showHighlight">highlight (h) <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
     <label for="showErrors">errors (e) <input type="checkbox" id="showErrors" bind:checked={showErrors}></label>
-    <label for="candidatesMode">candidate entry (c) <input type="checkbox" id="candidatesMode" bind:checked={candidatesMode}></label>
+    <label class="input-candidate-entry" for="candidatesMode">candidate entry (c) <input type="checkbox" id="candidatesMode" bind:checked={candidatesMode}></label>
   </div>
 
   <div class="main-cols">
