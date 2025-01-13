@@ -19,11 +19,14 @@ body {
 }
 
 .board {
-  border: 2px solid black;
-  width: fit-content;
+  display: grid;
+  /* border: 2px solid black; */
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  /* width: fit-content;
   height: fit-content;
   grid-auto-rows: min-content;
-  grid-auto-columns: max-content;
+  grid-auto-columns: max-content; */
   --bcolor: black;
 }
 
@@ -37,10 +40,10 @@ body {
     align-items: center;
     margin: 0;
   }
-  .board {
+  /* .board {
     border-width: 0px;
     margin: 0 auto;
-  }
+  } */
   .num {
     font-size: calc(var(--base-size) * 1) !important;
     padding: 0.75rem;
@@ -69,21 +72,42 @@ body {
   background-color: #fff;
   border: 1px solid hsl(0, 0%, 75%);
   background-color: hsl(0, 0%, 92%);
-  width: calc(var(--base-size) * 1.5);
-  height: calc(var(--base-size) * 1.5);
+  width: min(9vh, 10vw);
+  height: auto;
+  aspect-ratio: 1/1;
   font-family: inherit;
 }
 
-.cell:nth-child(3n+4):nth-child(-n+9) {
+/* right edge */
+.cell:nth-child(9n) {
+  border-right: 2px solid var(--bcolor);
+}
+
+/* top edge */
+.cell:nth-child(-n+9) {
+  border-top: 2px solid var(--bcolor);
+}
+
+/* inner horizontal*/
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54)
+{
+  border-bottom: 1px solid var(--bcolor);
+}
+
+/* bottom edge */
+.cell:nth-child(n+73) {
+  border-bottom: 2px solid var(--bcolor);
+}
+
+/* inner vertical */
+.cell:nth-child(3n+1) {
   border-left: 1px solid var(--bcolor);
 }
 
-.row:nth-child(3) .cell:nth-child(n) {
-  border-bottom: 1px solid var(--bcolor);
-}
-
-.row:nth-child(6) .cell:nth-child(n) {
-  border-bottom: 1px solid var(--bcolor);
+/* left edge */
+.cell:nth-child(9n+1) {
+  border-left: 2px solid var(--bcolor);
 }
 
 .value {

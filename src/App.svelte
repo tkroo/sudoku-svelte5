@@ -119,7 +119,6 @@
   
     <div class="board" class:solved={solved}>
       {#each grid as row, r}
-        <div class="row">
           {#each row as cell, c}
             <button class="cell"
               onclick={() => {curRow = r; curCol = c}}
@@ -130,7 +129,6 @@
               <span class="value" class:given={!grid[r][c].enabled} class:hidden={cell.value==0}>{cell.value}</span>
             </button>
           {/each}
-        </div>
       {/each}
     </div>
 
