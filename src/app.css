@@ -63,12 +63,12 @@ h1 {
 
 /* right edge */
 .cell:nth-child(9n) {
-  border-right: 2px solid var(--bcolor);
+  border-right: 1px solid var(--bcolor);
 }
 
 /* top edge */
 .cell:nth-child(-n+9) {
-  border-top: 2px solid var(--bcolor);
+  border-top: 1px solid var(--bcolor);
 }
 
 /* inner horizontal*/
@@ -80,7 +80,7 @@ h1 {
 
 /* bottom edge */
 .cell:nth-child(n+73) {
-  border-bottom: 2px solid var(--bcolor);
+  border-bottom: 1px solid var(--bcolor);
 }
 
 /* inner vertical */
@@ -90,7 +90,7 @@ h1 {
 
 /* left edge */
 .cell:nth-child(9n+1) {
-  border-left: 2px solid var(--bcolor);
+  border-left: 1px solid var(--bcolor);
 }
 
 .value {
@@ -128,14 +128,16 @@ h1 {
   align-items: baseline;
   padding: 0;
   flex-wrap: wrap;
+  font-size: 0.8rem;
 }
 
 .controls label {
-  font-size: 80%;
+  /* font-size: 80%; */
 }
 .controls .buttons, .controls .settings {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
 }
 
 button {
@@ -173,25 +175,11 @@ button[disabled] {
   aspect-ratio: 1/1;
 }
 
-.num-wide {
-  /* grid-column: span 3; */
-  /* aspect-ratio: unset; */
-}
-
-
-
 .done {
     background-color: hsla(120, 100%, 25%, 0.5);
     font-weight: bold;
     color: #fff;
 }
-
-/* .error::before {
-  position: absolute;
-  content: "\274c";
-  font-size: calc(var(--base-size) * 1.2);
-  color: hsla(0, 100%, 50%, 0.5) !important;
-} */
 
 .error::before,
 .error::after {
@@ -215,6 +203,36 @@ button[disabled] {
   max-width: 80%;
   line-break: anywhere;
 }
+
+.candidates-grid {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.2rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.25rem;
+}
+
+.candidates-grid.hideme {
+  /* visibility: hidden; */
+  display: none;
+}
+
+.candidates-grid span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid red; */
+}
+.candidates-grid span {
+  visibility: hidden;
+}
+.candidates-grid span.shown {
+  visibility: visible;
+}
+
 
 .activecandy {
   min-width: 20%;
