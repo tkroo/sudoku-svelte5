@@ -133,7 +133,7 @@ h1 {
 .controls {
   display: flex;
   gap: 2rem;
-  margin: 1rem 0;
+  margin: 0.5rem 0 0 0;
   align-items: baseline;
   padding: 0;
   flex-wrap: wrap;
@@ -144,6 +144,9 @@ h1 {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+}
+.settings-small {
+  display: none;
 }
 
 button {
@@ -252,9 +255,16 @@ button[disabled] {
 .timer {
   margin-top: 1rem;
   font-size: 0.8rem;
+  padding: 0.25rem;
+  transition: background-color 0.9s ease-in-out;
+}
+.timer.solved {
+  background-color: hsla(118, 70%, 80%, 1) !important;
 }
 
 footer {
+  display: flex;
+  justify-content: space-between;
   font-size: 0.8rem;
   margin-top: 1rem;
 }
@@ -280,18 +290,36 @@ footer {
     flex-direction: column;
     gap: 0.5rem;
   }
-  .controls .buttons, .controls .settings {
+  .controls .buttons {
     margin-bottom: 1rem;
   }
+  .controls .settings {
+    display: none;
+  }
+  .settings-small {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    font-size: 0.8rem;
+  }
+  .keyshortcut {
+    display: none;
+  }
+
   .nums-wrap {
     margin: 0 auto;
-    display: flex;
-    align-items: center;
+    display: grid;
+    /* align-items: center; */
     /* flex-wrap: wrap; */
-    width: 100%;
+    width: 80%;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: min-content;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 0.25rem;
   }
   .num {
-    font-size: calc(var(--base-size) * 0.55);
+    font-size: calc(var(--base-size) * 0.75);
     padding: 0.7rem;
   }
   .notes-grid span {
