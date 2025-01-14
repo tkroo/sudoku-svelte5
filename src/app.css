@@ -31,6 +31,8 @@ h1 {
   grid-auto-rows: min-content;
   grid-auto-columns: max-content; */
   --bcolor: black;
+  overflow: hidden;
+  border-radius: 0.75rem;
 }
 
 .board.solved {
@@ -61,27 +63,6 @@ h1 {
   font-family: inherit;
 }
 
-
-/* top edge */
-.cell:nth-child(-n+9) {
-  border-top: 1px solid var(--bcolor);
-}
-
-/* right edge */
-.cell:nth-child(9n) {
-  border-right: 1px solid var(--bcolor);
-}
-
-/* bottom edge */
-.cell:nth-child(n+73) {
-  border-bottom: 1px solid var(--bcolor);
-}
-
-/* left edge */
-.cell:nth-child(9n+1) {
-  border-left: 1px solid var(--bcolor);
-}
-
 /* inner horizontal*/
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54)
@@ -93,6 +74,29 @@ h1 {
 .cell:nth-child(3n+1) {
   border-left: 1px solid var(--bcolor);
 }
+
+/* left edge */
+.cell:nth-child(9n+1) {
+  border-left: 0px solid hsl(0, 0%, 92%);
+}
+
+/* top edge */
+/* .cell:nth-child(-n+9) {
+  border-top: 1px solid var(--bcolor);
+} */
+
+/* right edge */
+/* .cell:nth-child(9n) {
+  border-right: 1px solid var(--bcolor);
+} */
+
+/* bottom edge */
+/* .cell:nth-child(n+73) {
+  border-bottom: 1px solid var(--bcolor);
+} */
+
+
+
 
 
 .value {
@@ -259,6 +263,9 @@ footer {
     align-items: center;
     margin: 0;
   }
+  .board {
+    border-radius: 0.45rem;
+  }
   .cell.active {
     outline: 2px dashed hsl(200, 65%, 40%);
     outline-offset: -3px;
@@ -274,6 +281,8 @@ footer {
     margin: 0 auto;
     display: flex;
     align-items: center;
+    /* flex-wrap: wrap; */
+    width: 100%;
   }
   .num {
     font-size: calc(var(--base-size) * 0.55);
