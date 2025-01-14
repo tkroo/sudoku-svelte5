@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getSudoku } from 'sudoku-gen';
+  import { humanReadableTime } from './lib/humanReadableTime';
   
   type Cell = { value: any; enabled: boolean; candidates: number[] };
   type Grid = Cell[][];
@@ -19,10 +20,30 @@
   let showErrors = $state(false);
   let candidatesMode = $state(false);
 
+  // TIMER
+  let myInterval: ReturnType<typeof setInterval>;
+  let timeElapsed = $state(0);
+  let paused = false;
+  function startInterval() {
+    clearInterval(myInterval)
+		
+    myInterval = setInterval(()=> {
+      timeElapsed += 1;
+      if(solved) {
+        clearInterval(myInterval);
+      }
+    }, 1000)
+		
+	}
+  startInterval();
+  
+
   function generateBoard(level: Difficulty) {
     sudoku = getSudoku(level);
     grid = makeGrid(sudoku.puzzle);
     solution = makeGrid(sudoku.solution);
+    timeElapsed = 0;
+    startInterval();
   }
 
   generateBoard('easy');
@@ -57,6 +78,10 @@
     return b;
   }
 
+  function focusCell() {
+    document.getElementById(`cell_${curRow}${curCol}`).focus();
+  }
+
   function handleKeyDown(e: KeyboardEvent) {
     // console.log(e.key)
     if (e.key === 'ArrowRight') {
@@ -68,6 +93,7 @@
     } else if (e.key === 'ArrowUp') {
       curRow = (curRow + 8) % 9;
     }
+    focusCell();
     if (e.key=='d') {
       showDebug = !showDebug;
     }
@@ -85,7 +111,6 @@
         grid[curRow][curCol].candidates.pop();
       } else {
         grid[curRow][curCol].value = 0;
-
       }
     }
     
@@ -144,6 +169,7 @@
       >{level}</button>
       {/each}
       <!-- <button onclick={solvePuzzle}>solve</button> -->
+      
     </div>
     <div class="settings">
       <label for="showHighlight">highlight <span class="keyshortcut">(h)</span> <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
@@ -157,14 +183,21 @@
     <div class="board" class:solved={solved}>
       {#each grid as row, r}
           {#each row as cell, c}
-            <button class="cell"
+            <button id={'cell_'+r+''+c} class="cell"
               onclick={() => {curRow = r; curCol = c}}
               class:highlight={showHighlight && cellSelected==cell.value && cell.value != 0}
               class:active={r==curRow && c==curCol}
               class:error={showErrors && (solution[r][c].value != cell.value) && (cell.value != 0)}
             >
-              <span class="candidates" class:activecandy={candidatesMode && r==curRow && c==curCol}>{cell.candidates.join('')}</span>
-              <span class="value" class:given={!grid[r][c].enabled} class:hidden={cell.value==0}>{cell.value}</span>
+              <!-- <span class="candidates" class:activecandy={candidatesMode && r==curRow && c==curCol}>{cell.candidates.join('')}</span> -->
+              <div class="candidates-grid" class:hideme={cell.value != 0}>
+                {#each nums as can}
+                  <span class:shown={cell.candidates.includes(can)}>{can}</span>
+                {/each}
+              </div>
+              <span class="value" class:given={!grid[r][c].enabled} class:hidden={cell.value==0}>
+                {cell.value}
+              </span>
             </button>
           {/each}
       {/each}
@@ -182,6 +215,7 @@
     </div>
 
   </div>
+  <span>{solved ? 'Solved in ' : ''}{humanReadableTime(timeElapsed)}</span>
 </main>
 <footer>
   <p><a href="https://github.com/tkroo/sudoku-svelte5">source</a></p>
