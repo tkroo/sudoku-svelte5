@@ -249,8 +249,14 @@ button[disabled] {
   border-bottom: 1px solid hsl(0, 0%, 75%);
 }
 
+.timer {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
 footer {
-  margin-top: 2rem;
+  font-size: 0.8rem;
+  margin-top: 1rem;
 }
 
 @media screen and (max-width: 600px) {

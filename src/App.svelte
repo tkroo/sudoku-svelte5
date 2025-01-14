@@ -209,7 +209,7 @@
     </div>
 
   </div>
-  <span>{solved ? 'Solved '+sudoku?.difficulty+' in ' : ''}{humanReadableTime(timeElapsed)}</span>
+  <div class="timer">{solved ? 'Solved '+sudoku?.difficulty+' in ' : ''}{humanReadableTime(timeElapsed)}</div>
 </main>
 <footer>
   <p><a href="https://github.com/tkroo/sudoku-svelte5">source</a></p>
