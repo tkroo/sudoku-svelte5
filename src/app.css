@@ -117,6 +117,9 @@ h1 {
 .highlight {
   background-color: hsla(200, 100%, 80%, 0.5) !important;
 }
+/* .highlight .value {
+  color: hsla(200, 100%, 25%, 0.9) !important;
+} */
 
 .debug {
   font-size: 0.8rem;

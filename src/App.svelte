@@ -116,27 +116,12 @@
     
     if (parseInt(e.key) >= 1 && parseInt(e.key) <= 9) {
       let num: number = parseInt(e.key);
-      if(grid[curRow][curCol].enabled) {
-        if(notesMode) {
-          let c = grid[curRow][curCol].notes;
-          if(c.includes(num)) {
-            grid[curRow][curCol].notes = c.filter(x => x != num)
-          } else {
-            grid[curRow][curCol].notes.push(num)
-          }
-        } else {
-          grid[curRow][curCol].value = num;
-        }
-      }
+      updateCellorNotes(num);
     }
 
   }
 
-  // function handleClick(v: number,r,c) {
-  //   curRow = r;
-  //   curCol = c;
-  // }
-  function handleNumsClick(value) {
+  function updateCellorNotes(value) {
     if(grid[curRow][curCol].enabled) {
       if(notesMode) {
         let c = grid[curRow][curCol].notes;
@@ -148,7 +133,6 @@
       } else {
         grid[curRow][curCol].value = value;
       }
-      
     }
   }
 
@@ -218,10 +202,10 @@
         <button
           class="num"
           class:done={countAppearances[value] == 9}
-          onclick={() => handleNumsClick(value)}>{value}
+          onclick={() => updateCellorNotes(value)}>{value}
         </button>
       {/each}
-      <button class="num num-wide" onclick={() => handleNumsClick(0)}>X</button>
+      <button class="num num-wide" onclick={() => updateCellorNotes(0)}>X</button>
     </div>
 
   </div>
