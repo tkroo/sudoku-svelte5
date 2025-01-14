@@ -209,10 +209,10 @@ button[disabled] {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 0.2rem;
+  /* gap: 0.2rem; */
   width: 100%;
   height: 100%;
-  padding: 0.25rem;
+  /* padding: 0.25rem; */
 }
 
 .candidates-grid.hideme {
@@ -224,9 +224,6 @@ button[disabled] {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* border: 1px solid red; */
-}
-.candidates-grid span {
   visibility: hidden;
 }
 .candidates-grid span.shown {
@@ -273,5 +270,8 @@ footer {
   .num {
     font-size: calc(var(--base-size) * 0.55);
     padding: 0.7rem;
+  }
+  .candidates-grid span {
+    font-size: 70%;
   }
 }
