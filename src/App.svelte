@@ -2,7 +2,7 @@
   import { getSudoku } from 'sudoku-gen';
   import { humanReadableTime } from './lib/humanReadableTime';
   
-  type Cell = { value: any; enabled: boolean; candidates: number[] };
+  type Cell = { value: any; enabled: boolean; notes: number[] };
   type Grid = Cell[][];
   type Difficulty = 'easy' | 'medium' | 'hard' | 'expert';
   interface SudokuPuzzle {
@@ -18,7 +18,7 @@
   let solution = $state<Grid>([])
   let showHighlight = $state(true);
   let showErrors = $state(false);
-  let candidatesMode = $state(false);
+  let notesMode = $state(false);
 
   // TIMER
   let myInterval: ReturnType<typeof setInterval>;
@@ -71,7 +71,7 @@
     for (let i = 0; i < 9; i++) {
       let row = [];
       for (let j = 0; j < 9; j++) {
-        row.push({value:parseInt(puzzle[i * 9 + j]), enabled:parseInt(puzzle[i * 9 + j]) == 0 ? true : false, candidates: [ ]});
+        row.push({value:parseInt(puzzle[i * 9 + j]), enabled:parseInt(puzzle[i * 9 + j]) == 0 ? true : false, notes: [ ]});
       }
       b.push(row);
     }
@@ -97,8 +97,8 @@
     if (e.key=='d') {
       showDebug = !showDebug;
     }
-    if (e.key=='c') {
-      candidatesMode = !candidatesMode;
+    if (e.key=='-') {
+      notesMode = !notesMode;
     }
     if (e.key=='h') {
       showHighlight = !showHighlight;
@@ -107,8 +107,8 @@
       showErrors = !showErrors;
     }
     if (e.key === 'Delete') {
-      if(candidatesMode) {
-        grid[curRow][curCol].candidates.pop();
+      if(notesMode) {
+        grid[curRow][curCol].notes.pop();
       } else {
         grid[curRow][curCol].value = 0;
       }
@@ -117,12 +117,12 @@
     if (parseInt(e.key) >= 1 && parseInt(e.key) <= 9) {
       let num: number = parseInt(e.key);
       if(grid[curRow][curCol].enabled) {
-        if(candidatesMode) {
-          let c = grid[curRow][curCol].candidates;
+        if(notesMode) {
+          let c = grid[curRow][curCol].notes;
           if(c.includes(num)) {
-            grid[curRow][curCol].candidates = c.filter(x => x != num)
+            grid[curRow][curCol].notes = c.filter(x => x != num)
           } else {
-            grid[curRow][curCol].candidates.push(num)
+            grid[curRow][curCol].notes.push(num)
           }
         } else {
           grid[curRow][curCol].value = num;
@@ -138,7 +138,17 @@
   // }
   function handleNumsClick(value) {
     if(grid[curRow][curCol].enabled) {
-      grid[curRow][curCol].value = value;
+      if(notesMode) {
+        let c = grid[curRow][curCol].notes;
+          if(c.includes(value)) {
+            grid[curRow][curCol].notes = c.filter(x => x != value)
+          } else {
+            grid[curRow][curCol].notes.push(value)
+          }
+      } else {
+        grid[curRow][curCol].value = value;
+      }
+      
     }
   }
 
@@ -174,7 +184,7 @@
     <div class="settings">
       <label for="showHighlight">highlight <span class="keyshortcut">(h)</span> <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
       <label for="showErrors">errors <span class="keyshortcut">(e)</span> <input type="checkbox" id="showErrors" bind:checked={showErrors}></label>
-      <label class="input-candidate-entry" for="candidatesMode">candidate entry <span class="keyshortcut">(c)</span> <input type="checkbox" id="candidatesMode" bind:checked={candidatesMode}></label>
+      <label class="input-note-entry" class:highlight={notesMode} for="notesMode">notes <span class="keyshortcut">(-)</span> <input type="checkbox" id="notesMode" bind:checked={notesMode}></label>
     </div>
   </div>
 
@@ -189,10 +199,10 @@
               class:active={r==curRow && c==curCol}
               class:error={showErrors && (solution[r][c].value != cell.value) && (cell.value != 0)}
             >
-              <!-- <span class="candidates" class:activecandy={candidatesMode && r==curRow && c==curCol}>{cell.candidates.join('')}</span> -->
-              <div class="candidates-grid" class:hideme={cell.value != 0}>
-                {#each nums as can}
-                  <span class:shown={cell.candidates.includes(can)}>{can}</span>
+              <!-- <span class="notes" class:activecandy={notesMode && r==curRow && c==curCol}>{cell.notes.join('')}</span> -->
+              <div class="notes-grid" class:active={r==curRow && c==curCol && notesMode} class:hideme={cell.value != 0}>
+                {#each nums as note}
+                  <span class:shown={cell.notes.includes(note)}>{note}</span>
                 {/each}
               </div>
               <span class="value" class:given={!grid[r][c].enabled} class:hidden={cell.value==0}>

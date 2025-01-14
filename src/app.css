@@ -61,14 +61,25 @@ h1 {
   font-family: inherit;
 }
 
+
+/* top edge */
+.cell:nth-child(-n+9) {
+  border-top: 1px solid var(--bcolor);
+}
+
 /* right edge */
 .cell:nth-child(9n) {
   border-right: 1px solid var(--bcolor);
 }
 
-/* top edge */
-.cell:nth-child(-n+9) {
-  border-top: 1px solid var(--bcolor);
+/* bottom edge */
+.cell:nth-child(n+73) {
+  border-bottom: 1px solid var(--bcolor);
+}
+
+/* left edge */
+.cell:nth-child(9n+1) {
+  border-left: 1px solid var(--bcolor);
 }
 
 /* inner horizontal*/
@@ -78,20 +89,11 @@ h1 {
   border-bottom: 1px solid var(--bcolor);
 }
 
-/* bottom edge */
-.cell:nth-child(n+73) {
-  border-bottom: 1px solid var(--bcolor);
-}
-
 /* inner vertical */
 .cell:nth-child(3n+1) {
   border-left: 1px solid var(--bcolor);
 }
 
-/* left edge */
-.cell:nth-child(9n+1) {
-  border-left: 1px solid var(--bcolor);
-}
 
 .value {
   font-size: calc(var(--base-size) * 0.8);
@@ -131,9 +133,6 @@ h1 {
   font-size: 0.8rem;
 }
 
-.controls label {
-  /* font-size: 80%; */
-}
 .controls .buttons, .controls .settings {
   display: flex;
   gap: 0.5rem;
@@ -197,39 +196,45 @@ button[disabled] {
   transform: rotate(-45deg);
 }
 
-.candidates {
+.notes {
   position: absolute;
   top: 5px;
   max-width: 80%;
   line-break: anywhere;
 }
 
-.candidates-grid {
+.notes-grid {
   position: absolute;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  /* gap: 0.2rem; */
   width: 100%;
   height: 100%;
-  /* padding: 0.25rem; */
+}
+.notes-grid.active::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: hsla(0, 0%, 100%, 0);
+  opacity: 0.5;
+  background-image:  linear-gradient(#444cf7 1px, transparent 1px), linear-gradient(to right, #444cf7 1px, transparent 1px);
+  background-size: 33% 33%;
 }
 
-.candidates-grid.hideme {
-  /* visibility: hidden; */
+.notes-grid.hideme {
   display: none;
 }
 
-.candidates-grid span {
+.notes-grid span {
   display: flex;
   align-items: center;
   justify-content: center;
   visibility: hidden;
 }
-.candidates-grid span.shown {
+.notes-grid span.shown {
   visibility: visible;
 }
-
 
 .activecandy {
   min-width: 20%;
@@ -241,7 +246,6 @@ footer {
   margin-top: 2rem;
 }
 
-
 @media screen and (max-width: 600px) {
   body {
     --base-size: 1.6rem;
@@ -252,8 +256,9 @@ footer {
     align-items: center;
     margin: 0;
   }
-  .input-candidate-entry, .keyshortcut {
-    display: none;
+  .cell.active {
+    outline: 2px dashed hsl(200, 65%, 40%);
+    outline-offset: -3px;
   }
   .controls {
     flex-direction: column;
@@ -271,7 +276,7 @@ footer {
     font-size: calc(var(--base-size) * 0.55);
     padding: 0.7rem;
   }
-  .candidates-grid span {
+  .notes-grid span {
     font-size: 70%;
   }
 }
