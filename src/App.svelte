@@ -107,9 +107,7 @@
       showErrors = !showErrors;
     }
     if (e.key === 'Delete') {
-      if(notesMode) {
-        grid[curRow][curCol].notes.pop();
-      } else {
+      if(grid[curRow][curCol].enabled) {
         grid[curRow][curCol].value = 0;
       }
     }
