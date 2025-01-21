@@ -2,7 +2,7 @@
   import { getSudoku } from 'sudoku-gen';
   import { humanReadableTime } from './lib/humanReadableTime';
   
-  type Cell = { value: any; enabled: boolean; notes: number[] };
+  type Cell = { value: any; enabled: boolean; notes: number[]; hiddenNotes: number[] };
   type Grid = Cell[][];
   type Difficulty = 'easy' | 'medium' | 'hard' | 'expert';
   interface SudokuPuzzle {
@@ -111,6 +111,14 @@
         grid[curRow][curCol].value = 0;
       }
     }
+
+    if (e.key === 'a') {
+      fillCandidates();
+    }
+    
+    if (e.key === 'b') {
+      findSingles();
+    }
     
     if (parseInt(e.key) >= 1 && parseInt(e.key) <= 9) {
       let num: number = parseInt(e.key);
@@ -119,7 +127,7 @@
 
   }
 
-  function updateCellorNotes(value) {
+  function updateCellorNotes(value: number) {
     if(grid[curRow][curCol].enabled) {
       if(notesMode) {
         let c = grid[curRow][curCol].notes;
@@ -133,6 +141,61 @@
       }
     }
   }
+
+  const get3x3 = (row: number, col: number) => {
+    const startRow = Math.floor(row / 3) * 3;
+    const startCol = Math.floor(col / 3) * 3;
+    return grid.slice(startRow, startRow + 3).map(x => x.slice(startCol, startCol + 3));
+  }
+
+  const getRow = (row: number, col: number) => {
+    return grid[row];
+  }
+
+  const getCol = (row: number, col: number) => {
+    return grid.map(x => x[col]);
+  }
+
+  let findCandidates = () => {
+    for(let i = 0; i < 9; i++) {
+      for(let j = 0; j < 9; j++) {
+        let r = getRow(i, j).map(x => x.value);
+        let c = getCol(i, j).map(x => x.value);
+        let a3x3 = get3x3(i, j).flat().map(x => x.value);
+        let combined = r.concat(c).concat(a3x3);
+        let reject = Array.from(new Set(combined)).filter(x => x != 0);
+        let possibles = [1,2,3,4,5,6,7,8,9].filter(x => !reject.includes(x));
+        if(grid[i][j].value == 0) {
+          grid[i][j].hiddenNotes = possibles;
+        }
+      }
+    }
+  }
+
+  let fillCandidates = () => {
+    findCandidates();
+    for(let i = 0; i < 9; i++) {
+      for(let j = 0; j < 9; j++) {
+        if(grid[i][j].value == 0) {
+          grid[i][j].notes = grid[i][j].hiddenNotes;
+        }
+      }
+    }
+  }
+
+  let findSingles = () => {
+    findCandidates();
+    let boxes = [[1,1], [1,4], [1,7], [4,1], [4,4], [4,7], [7,1], [7,4], [7,7]];
+    for( let i = 0; i < boxes.length; i++) {
+      let box = get3x3(boxes[i][0], boxes[i][1]);
+      let combined = box.flat().map(x => x.hiddenNotes).filter(x => x).flat();
+      // console.log('box', JSON.stringify(box));
+      console.log('JSON.stringify(combined) : ', JSON.stringify(combined));
+      console.log('combined : ', combined);
+      
+    }
+  }
+
 
   function handleButtonClick(level) {
       generateBoard(level);
@@ -167,6 +230,7 @@
       <label for="showHighlight">highlight <span class="keyshortcut">(h)</span> <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
       <label for="showErrors">errors <span class="keyshortcut">(e)</span> <input type="checkbox" id="showErrors" bind:checked={showErrors}></label>
       <label class="input-note-entry" class:highlight={notesMode} for="notesMode">notes <span class="keyshortcut">(-)</span> <input type="checkbox" id="notesMode" bind:checked={notesMode}></label>
+      <button onclick={fillCandidates}>autoCandidates</button>
     </div>
   </div>
 
@@ -209,6 +273,7 @@
       <label for="showHighlight">highlight <span class="keyshortcut">(h)</span> <input type="checkbox" id="showHighlight" bind:checked={showHighlight}></label>
       <label for="showErrors">errors <span class="keyshortcut">(e)</span> <input type="checkbox" id="showErrors" bind:checked={showErrors}></label>
       <label class="input-note-entry" class:highlight={notesMode} for="notesMode">notes <span class="keyshortcut">(-)</span> <input type="checkbox" id="notesMode" bind:checked={notesMode}></label>
+      <button onclick={fillCandidates}>autoCandidates</button>
     </div>
 
   </div>
